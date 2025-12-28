@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const heroSlides = [
     {
@@ -38,38 +37,8 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  const goToPrev = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-  };
-
-  const goToNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    if (location.pathname !== '/') {
-      navigate('/');
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    } else {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
-
   return (
     <section id="home" className="relative h-screen overflow-hidden">
-      {/* Background Slides */}
       {heroSlides.map((slide, index) => (
         <div
           key={index}
@@ -85,7 +54,6 @@ const HeroSection = () => {
         </div>
       ))}
 
-      {/* Content */}
       <div className="relative z-10 h-full flex items-center justify-center">
         <div className="container-custom text-center">
           {heroSlides.map((slide, index) => (
@@ -113,7 +81,7 @@ const HeroSection = () => {
                       variant="hero" 
                       size="lg" 
                       className="group"
-                      onClick={() => scrollToSection('products')}
+                      onClick={() => navigate('/products')}
                     >
                       {t('viewProducts')}
                       <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -121,7 +89,7 @@ const HeroSection = () => {
                     <Button 
                       variant="heroOutline" 
                       size="lg"
-                      onClick={() => scrollToSection('services')}
+                      onClick={() => navigate('/services')}
                     >
                       {t('ourServices')}
                     </Button>
@@ -133,36 +101,31 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Navigation Arrows */}
       <button
-        onClick={goToPrev}
+        onClick={() => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)}
         className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-2 text-foreground/60 hover:text-primary transition-colors"
       >
         <ChevronLeft className="h-8 w-8" />
       </button>
       <button
-        onClick={goToNext}
+        onClick={() => setCurrentSlide((prev) => (prev + 1) % heroSlides.length)}
         className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-2 text-foreground/60 hover:text-primary transition-colors"
       >
         <ChevronRight className="h-8 w-8" />
       </button>
 
-      {/* Dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
         {heroSlides.map((_, index) => (
           <button
             key={index}
-            onClick={() => goToSlide(index)}
+            onClick={() => setCurrentSlide(index)}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide
-                ? "bg-primary w-8"
-                : "bg-foreground/30 hover:bg-foreground/50"
+              index === currentSlide ? "bg-primary w-8" : "bg-foreground/30 hover:bg-foreground/50"
             }`}
           />
         ))}
       </div>
 
-      {/* Scroll Indicator */}
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 animate-float">
         <div className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center">
           <div className="w-1.5 h-3 bg-primary rounded-full mt-2 animate-bounce" />
