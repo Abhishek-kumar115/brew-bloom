@@ -4,9 +4,19 @@ import { Button } from "@/components/ui/button";
 import { products, Product } from "@/data/products";
 import ProductCard from "./ProductCard";
 import ProductDetail from "./ProductDetail";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ProductsSection = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollToProducts = () => {
+    const element = document.getElementById('products');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
@@ -41,7 +51,7 @@ const ProductsSection = () => {
 
           {/* CTA */}
           <div className="text-center mt-12">
-            <Button variant="hero" size="lg" className="group">
+            <Button variant="hero" size="lg" className="group" onClick={scrollToProducts}>
               View All Products
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>

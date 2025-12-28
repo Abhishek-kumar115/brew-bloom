@@ -1,5 +1,6 @@
 import { ArrowRight, Ship, Users, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const services = [
   {
@@ -23,6 +24,16 @@ const services = [
 ];
 
 const ServicesSection = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleViewMore = () => {
+    const element = document.getElementById('services');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="services" className="section-padding bg-card">
       <div className="container-custom">
@@ -72,7 +83,7 @@ const ServicesSection = () => {
                   <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                     {service.description}
                   </p>
-                  <Button variant="link" className="p-0 h-auto text-primary group/btn">
+                  <Button variant="link" className="p-0 h-auto text-primary group/btn" onClick={handleViewMore}>
                     View more
                     <ArrowRight className="ml-1 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>

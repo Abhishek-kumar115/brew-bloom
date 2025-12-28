@@ -2,6 +2,7 @@ import { X, ArrowLeft, Coffee } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/data/products";
 import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface ProductDetailProps {
   product: Product;
@@ -10,6 +11,26 @@ interface ProductDetailProps {
 
 const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
   const [animationStage, setAnimationStage] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleContactClick = () => {
+    onClose();
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById('contact');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById('contact');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   useEffect(() => {
     // Stage 0: Initial
@@ -199,10 +220,10 @@ const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-in-up delay-500">
-              <Button variant="hero" size="lg" className="flex-1">
+              <Button variant="hero" size="lg" className="flex-1" onClick={handleContactClick}>
                 Request Quote
               </Button>
-              <Button variant="outline" size="lg" className="flex-1">
+              <Button variant="outline" size="lg" className="flex-1" onClick={handleContactClick}>
                 Contact Us
               </Button>
             </div>

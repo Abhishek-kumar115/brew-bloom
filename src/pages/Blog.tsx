@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Tag } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Calendar, User } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -9,6 +10,12 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 const Blog = () => {
   const { language, t } = useLanguage();
+  const navigate = useNavigate();
+  const [expandedPost, setExpandedPost] = useState<string | null>(null);
+
+  const handleReadMore = (postId: string) => {
+    setExpandedPost(expandedPost === postId ? null : postId);
+  };
 
   return (
     <>
@@ -83,11 +90,18 @@ const Blog = () => {
                     </h2>
 
                     <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                      {language === 'en' ? post.excerptEn : post.excerptEs}
+                      {expandedPost === post.id 
+                        ? (language === 'en' ? post.contentEn : post.contentEs)
+                        : (language === 'en' ? post.excerptEn : post.excerptEs)
+                      }
                     </p>
 
-                    <Button variant="ghost" className="text-primary hover:text-primary p-0 h-auto font-medium group/btn">
-                      {t('readMore')}
+                    <Button 
+                      variant="ghost" 
+                      className="text-primary hover:text-primary p-0 h-auto font-medium group/btn"
+                      onClick={() => handleReadMore(post.id)}
+                    >
+                      {expandedPost === post.id ? (language === 'en' ? 'Show Less' : 'Ver Menos') : t('readMore')}
                       <span className="ml-2 group-hover/btn:translate-x-1 transition-transform">→</span>
                     </Button>
                   </div>
