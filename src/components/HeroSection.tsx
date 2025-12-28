@@ -1,37 +1,42 @@
 import { useState, useEffect } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const heroSlides = [
-  {
-    subtitle: "Perú · Selva Central",
-    title: "ANKU Coffee Project",
-    description: "Specialty coffee from the Central Jungle of Peru",
-    image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=80",
-  },
-  {
-    subtitle: "100% Arabica",
-    title: "Release The Flavor",
-    description: "Experience the authentic taste of Peruvian highlands",
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&q=80",
-  },
-  {
-    subtitle: "Fair Trade · Sustainable",
-    title: "From Farm to Cup",
-    description: "Supporting local producers with every sip",
-    image: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1920&q=80",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { t } = useLanguage();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const heroSlides = [
+    {
+      subtitle: t('heroSubtitle1'),
+      title: t('heroTitle1'),
+      description: t('heroDesc1'),
+      image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=80",
+    },
+    {
+      subtitle: t('heroSubtitle2'),
+      title: t('heroTitle2'),
+      description: t('heroDesc2'),
+      image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&q=80",
+    },
+    {
+      subtitle: t('heroSubtitle3'),
+      title: t('heroTitle3'),
+      description: t('heroDesc3'),
+      image: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1920&q=80",
+    },
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [heroSlides.length]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
@@ -43,6 +48,23 @@ const HeroSection = () => {
 
   const goToNext = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   return (
@@ -87,12 +109,21 @@ const HeroSection = () => {
                     {slide.description}
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-300">
-                    <Button variant="hero" size="lg" className="group">
-                      View Products
+                    <Button 
+                      variant="hero" 
+                      size="lg" 
+                      className="group"
+                      onClick={() => scrollToSection('products')}
+                    >
+                      {t('viewProducts')}
                       <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
-                    <Button variant="heroOutline" size="lg">
-                      Our Services
+                    <Button 
+                      variant="heroOutline" 
+                      size="lg"
+                      onClick={() => scrollToSection('services')}
+                    >
+                      {t('ourServices')}
                     </Button>
                   </div>
                 </>
