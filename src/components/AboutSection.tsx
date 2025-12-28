@@ -1,24 +1,27 @@
 import { Coffee, Leaf, Heart } from "lucide-react";
-
-const features = [
-  {
-    icon: Coffee,
-    title: "Specialty Coffee",
-    description: "Hand-selected beans from the finest farms",
-  },
-  {
-    icon: Leaf,
-    title: "Sustainable Production",
-    description: "Eco-friendly practices at every step",
-  },
-  {
-    icon: Heart,
-    title: "Fair Trade",
-    description: "Supporting local farming communities",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AboutSection = () => {
+  const { t } = useLanguage();
+
+  const features = [
+    {
+      icon: Coffee,
+      title: t('specialtyCoffee'),
+      description: t('specialtyCoffeeDesc'),
+    },
+    {
+      icon: Leaf,
+      title: t('sustainable'),
+      description: t('sustainableDesc'),
+    },
+    {
+      icon: Heart,
+      title: t('fairTrade'),
+      description: t('fairTradeDesc'),
+    },
+  ];
+
   return (
     <section id="about" className="section-padding bg-card">
       <div className="container-custom">
@@ -29,24 +32,12 @@ const AboutSection = () => {
               ANKU Coffee Project
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-3 mb-6">
-              Who We Are?
+              {t('aboutTitle')}
             </h2>
             <div className="space-y-4 text-foreground/80 leading-relaxed">
-              <p>
-                We are a team passionate about coffee and committed to excellence,
-                working directly with producers from the Central Jungle of Peru,
-                always seeking to highlight the best of each green bean.
-              </p>
-              <p>
-                We are dedicated to offering high-quality coffee, both in green and
-                roasted versions, under a sustainable and fair trade approach.
-              </p>
-              <p>
-                Our mission is to connect coffee lovers with the stories behind each
-                cup, guaranteeing freshness, authentic flavor and a positive impact
-                on coffee communities. At ANKU Coffee Project, each bean tells a
-                story of effort, dedication and love for coffee.
-              </p>
+              <p>{t('aboutDesc1')}</p>
+              <p>{t('aboutDesc2')}</p>
+              <p>{t('aboutDesc3')}</p>
             </div>
 
             {/* Features */}
@@ -85,7 +76,7 @@ const AboutSection = () => {
             {/* Stats Badge */}
             <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-xl shadow-gold">
               <div className="text-4xl font-display font-bold">15+</div>
-              <div className="text-sm opacity-90">years of experience</div>
+              <div className="text-sm opacity-90">{t('yearsExperience')}</div>
             </div>
           </div>
         </div>
